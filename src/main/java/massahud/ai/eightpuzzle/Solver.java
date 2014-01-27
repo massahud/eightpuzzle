@@ -29,10 +29,6 @@ import java.util.List;
  *
  * @author Geraldo Massahud
  *
- * Informações SVN
- * @version $Revision: $:
- * @author Última modificação por $Author: $:
- * @date $Date: $:
  */
 public class Solver {
 

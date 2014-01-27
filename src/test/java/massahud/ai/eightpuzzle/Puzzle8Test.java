@@ -149,6 +149,48 @@ public class Puzzle8Test {
         puzzle.move(Direction.RIGHT);
         assertThat(puzzle.getState()).isEqualTo("123456780");
     }
+    
+    @Test
+    public void shouldMoveDown() {
+        Puzzle8 puzzle = new Puzzle8("012345678");
+        puzzle.move(Direction.DOWN);
+        assertThat(puzzle.getState()).isEqualTo("312045678");
+        puzzle.move(Direction.DOWN);
+        assertThat(puzzle.getState()).isEqualTo("312645078");
+
+        puzzle = new Puzzle8("102345678");
+        puzzle.move(Direction.DOWN);
+        assertThat(puzzle.getState()).isEqualTo("142305678");
+        puzzle.move(Direction.DOWN);
+        assertThat(puzzle.getState()).isEqualTo("142375608");
+
+        puzzle = new Puzzle8("120345678");
+        puzzle.move(Direction.DOWN);
+        assertThat(puzzle.getState()).isEqualTo("125340678");
+        puzzle.move(Direction.DOWN);
+        assertThat(puzzle.getState()).isEqualTo("125348670");
+    }
+    
+    @Test
+    public void shouldMoveUp() {
+        Puzzle8 puzzle = new Puzzle8("312645078");
+        puzzle.move(Direction.UP);
+        assertThat(puzzle.getState()).isEqualTo("312045678");
+        puzzle.move(Direction.UP);
+        assertThat(puzzle.getState()).isEqualTo("012345678");
+
+        puzzle = new Puzzle8("142375608");
+        puzzle.move(Direction.UP);
+        assertThat(puzzle.getState()).isEqualTo("142305678");
+        puzzle.move(Direction.UP);
+        assertThat(puzzle.getState()).isEqualTo("102345678");
+
+        puzzle = new Puzzle8("125348670");
+        puzzle.move(Direction.UP);
+        assertThat(puzzle.getState()).isEqualTo("125340678");
+        puzzle.move(Direction.UP);
+        assertThat(puzzle.getState()).isEqualTo("120345678");
+    }
 
     @Test(expectedExceptions = InvalidAction.class)
     public void shouldNotMoveLeft() {
@@ -190,6 +232,5 @@ public class Puzzle8Test {
     public void shouldReturnFourPossibleActionsOnMiddle() {
         Puzzle8 puzzle = new Puzzle8("123405678");
         assertThat(puzzle.getPossibleActions()).hasSize(4).contains(LEFT, RIGHT, UP, DOWN);
-    }    
-
+    }
 }

@@ -31,10 +31,6 @@ import static massahud.ai.eightpuzzle.Direction.*;
  *
  * @author Geraldo Massahud
  *
- * Informações SVN
- * @version $Revision: $:
- * @author Última modificação por $Author: $:
- * @date $Date: $:
  */
 public class Puzzle8 {
 
@@ -118,6 +114,16 @@ public class Puzzle8 {
                 state.setCharAt(blankStatePos, state.charAt(blankStatePos + 1));
                 state.setCharAt(blankStatePos + 1, '0');
                 blankStatePos = blankStatePos + 1;
+                break;
+            case UP:
+                state.setCharAt(blankStatePos, state.charAt(blankStatePos - COLS));
+                state.setCharAt(blankStatePos - COLS, '0');
+                blankStatePos = blankStatePos - COLS;
+                break;
+            case DOWN:
+                state.setCharAt(blankStatePos, state.charAt(blankStatePos + COLS));
+                state.setCharAt(blankStatePos + COLS, '0');
+                blankStatePos = blankStatePos + COLS;
                 break;
         }
 

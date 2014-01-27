@@ -27,10 +27,6 @@ package massahud.ai.eightpuzzle;
  *
  * @author Geraldo Massahud
  *
- * Informações SVN
- * @version $Revision: $:
- * @author Última modificação por $Author: $:
- * @date $Date: $:
  */
 public class InvalidAction extends RuntimeException {
 
