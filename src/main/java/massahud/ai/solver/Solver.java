@@ -61,13 +61,11 @@ public class Solver<Action, State> {
 
 		SearchNode<Action, State> node = fringe.poll();
 		while (node != null) {
-			System.out.println("Node: " + node);
 			if (goalEvaluator.satisfyGoal(node)) {
 				return generateSolution(node);
 			} else {
 				fringe.addAll(expander.expand(node));
-			}
-			System.out.println("Fringe: " + fringe);
+			}			
 			node = fringe.poll();			
 		}		
 		return Collections.emptyList();		
