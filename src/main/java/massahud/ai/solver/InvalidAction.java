@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package massahud.ai.eightpuzzle;
+package massahud.ai.solver;
 
 /**
  *
@@ -30,19 +30,21 @@ package massahud.ai.eightpuzzle;
  */
 public class InvalidAction extends RuntimeException {
 
-    private Direction direction;
+	private static final long serialVersionUID = 1L;
+	
+	private Object action;
 
-    InvalidAction(Direction direction) {
-        this.direction = direction;
+    public InvalidAction(Object action) {
+        this.action = action;
     }
 
     @Override
     public String getMessage() {
-        return "Impossible to move " + direction;
+        return "Invalid action:" + action;
     }
 
-    public Direction getInvalidDirection() {
-        return this.direction;
+    public Object getInvalidAction() {
+        return this.action;
     }
 
 }

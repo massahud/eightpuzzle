@@ -25,6 +25,9 @@ package massahud.ai.eightpuzzle;
 
 import static massahud.ai.eightpuzzle.Direction.*;
 import static org.fest.assertions.Assertions.assertThat;
+import massahud.ai.solver.InvalidAction;
+import massahud.ai.solver.InvalidState;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

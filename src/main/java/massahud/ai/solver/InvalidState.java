@@ -21,18 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package massahud.ai.eightpuzzle;
 
-import java.util.List;
+package massahud.ai.solver;
 
 /**
  *
  * @author Geraldo Massahud
- *
+ * 
  */
-public class Solver {
+public class InvalidState extends RuntimeException {
 
-    public List<Direction> solve(Puzzle8 puzzle) {
-        return null;
+	private static final long serialVersionUID = 1L;
+	
+	private final Object state;
+    public InvalidState(Object state) {
+        this.state = state;
     }
+
+    @Override
+    public String getMessage() {
+        return "Invalid state: " + state;
+    }
+    
+    
+
+    
 }

@@ -23,9 +23,16 @@
  */
 package massahud.ai.eightpuzzle;
 
+import static massahud.ai.eightpuzzle.Direction.DOWN;
+import static massahud.ai.eightpuzzle.Direction.LEFT;
+import static massahud.ai.eightpuzzle.Direction.RIGHT;
+import static massahud.ai.eightpuzzle.Direction.UP;
+
 import java.util.ArrayList;
 import java.util.List;
-import static massahud.ai.eightpuzzle.Direction.*;
+
+import massahud.ai.solver.InvalidAction;
+import massahud.ai.solver.InvalidState;
 
 /**
  *
