@@ -34,10 +34,6 @@ import massahud.ai.solver.Solver;
  *
  * @author Geraldo Massahud
  *
- * Informações SVN
- * @version $Revision: $:
- * @author Última modificação por $Author: $:
- * @date $Date: $:
  */
 public class Puzzle8Solver extends Solver<Direction, String> {
 

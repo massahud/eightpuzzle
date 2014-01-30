@@ -31,10 +31,6 @@ import massahud.ai.solver.SearchNode;
  *
  * @author Geraldo Massahud
  * 
- * Informações SVN
- * @version $Revision: $:
- * @author  Última modificação por $Author: $:
- * @date    $Date: $:
  */
 public class Puzzle8GoalEvaluator implements GoalEvaluator<Direction, String>{
     private String goal;

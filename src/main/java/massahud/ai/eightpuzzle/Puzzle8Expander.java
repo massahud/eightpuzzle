@@ -33,10 +33,6 @@ import massahud.ai.solver.SearchNode;
  *
  * @author Geraldo Massahud
  * 
- * Informações SVN
- * @version $Revision: $:
- * @author  Última modificação por $Author: $:
- * @date    $Date: $:
  */
 class Puzzle8Expander implements Expander<Direction, String> {
 
