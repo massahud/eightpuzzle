@@ -161,11 +161,10 @@ public class Puzzle8 {
     public String toString() {
     	StringBuilder builder = new StringBuilder();
     	
-    	builder.append(state.substring(0, 3)).append("/n");
-    	builder.append(state.substring(3, 6)).append("/n");
+    	builder.append(state.substring(0, 3)).append("\n");
+    	builder.append(state.substring(3, 6)).append("\n");
     	builder.append(state.substring(6, 9));
     	
     	return builder.toString();
     }
-
 }

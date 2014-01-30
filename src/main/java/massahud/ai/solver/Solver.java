@@ -23,97 +23,144 @@
  */
 package massahud.ai.solver;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import massahud.ai.eightpuzzle.Puzzle8;
 
 /**
- * 
+ *
  * @author Geraldo Massahud
- * 
+ *
  */
 public class Solver<Action, State> {
 
-	private static final int QUEUE_INITIAL_CAPACITY = 11;
+    private static final int QUEUE_INITIAL_CAPACITY = 11;
 
-	/**
-	 * 
-	 * @param initialState
-	 * @param evaluationFunction
-	 * @param expander
-	 * @param goalEvaluator
-	 * @return
-	 */
-	public List<SearchNode<Action, State>> solve(
-			SearchNode<Action, State> initialState,
-			final EvaluationFunction<Action, State> evaluationFunction,
-			final Expander<Action, State> expander,
-			final GoalEvaluator<Action, State> goalEvaluator) {
+    private PriorityQueue<SearchNode<Action, State>> fringe;
 
-		if (initialState == null) {
-			throw new IllegalArgumentException("initialState can not be null");
-		}
-		final PriorityQueue<SearchNode<Action, State>> fringe = createPriorityQueue(evaluationFunction);
+    private final java.util.HashSet<State> states = new HashSet<>();
+    private int steps;
 
-		fringe.add(initialState);
+    /**
+     *
+     * @param initialState
+     * @param evaluationFunction
+     * @param expander
+     * @param goalEvaluator
+     * @return
+     */
+    public List<SearchNode<Action, State>> solve(
+            SearchNode<Action, State> initialState,
+            final EvaluationFunction<Action, State> evaluationFunction,
+            final Expander<Action, State> expander,
+            final GoalEvaluator<Action, State> goalEvaluator) {
 
-		SearchNode<Action, State> node = fringe.poll();
-		while (node != null) {
-			if (goalEvaluator.satisfyGoal(node)) {
-				return generateSolution(node);
-			} else {
-				fringe.addAll(expander.expand(node));
-			}			
-			node = fringe.poll();			
-		}		
-		return Collections.emptyList();		
-	}
+        states.clear();
+        steps = 0;
+        
+        if (initialState == null) {
+            throw new IllegalArgumentException("initialState can not be null");
+        }
+        
+        
 
-	private List<SearchNode<Action, State>> generateSolution(
-			SearchNode<Action,State> goalState) {
-		LinkedList<SearchNode<Action, State>> solution = new LinkedList<>();
-		SearchNode<Action,State> node = goalState;
+        fringe = createPriorityQueue(evaluationFunction);
 
-		while (node != null) {
-			solution.push(node);
-			node = node.getFromNode();
-		}
-		return solution;
-	}
+        fringe.add(initialState);
 
-	/**
-	 * Creates a PriorityQueue with a comparator based on the evaluation
-	 * function
-	 * 
-	 * @param evaluationFunction
-	 * @return
-	 */
-	private PriorityQueue<SearchNode<Action, State>> createPriorityQueue(
-			final EvaluationFunction<Action, State> evaluationFunction) {
+        SearchNode<Action, State> node = fringe.poll();
+        
+        states.add(node.getState());
+        
 
-		return new PriorityQueue<>(QUEUE_INITIAL_CAPACITY,
-				new Comparator<SearchNode<Action, State>>() {
-					@Override
-					public int compare(SearchNode<Action, State> s1,
-							SearchNode<Action, State> s2) {
-						Integer cost1 = s1.getCost();
-						Integer cost2 = s2.getCost();
+        while (node != null) {
+            steps++;
+            if (goalEvaluator.satisfyGoal(node)) {
+                
+                return generateSolution(node);
+            } else {
+                List<SearchNode<Action, State>> expansion = expander.expand(node);
+                prune(expansion);
 
-						// set the nodes costs if they are not set yet
-						if (cost1 == null) {
-							cost1 = evaluationFunction.evaluate(s1);
-							s1.setCost(cost1);
-						}
+                fringe.addAll(expansion);
+            }
+            node = fringe.poll();
+            if (node != null) {
+                states.add(node.getState());
+            }
 
-						if (cost2 == null) {
-							cost2 = evaluationFunction.evaluate(s2);
-							s2.setCost(cost2);
-						}
-						return cost1 - cost2;
-					}
-				});
+        }
+        
+        return Collections.emptyList();
+    }
 
-	}
+    private List<SearchNode<Action, State>> generateSolution(
+            SearchNode<Action, State> goalState) {
+        LinkedList<SearchNode<Action, State>> solution = new LinkedList<>();
+        SearchNode<Action, State> node = goalState;
+
+        while (node != null) {
+            solution.push(node);
+            node = node.getFromNode();
+        }
+        return solution;
+    }
+
+    /**
+     * Creates a PriorityQueue with a comparator based on the evaluation
+     * function
+     *
+     * @param evaluationFunction
+     * @return
+     */
+    private PriorityQueue<SearchNode<Action, State>> createPriorityQueue(
+            final EvaluationFunction<Action, State> evaluationFunction) {
+
+        return new PriorityQueue<>(QUEUE_INITIAL_CAPACITY,
+                new Comparator<SearchNode<Action, State>>() {
+                    @Override
+                    public int compare(SearchNode<Action, State> s1,
+                            SearchNode<Action, State> s2) {
+                        Integer cost1 = s1.getCost();
+                        Integer cost2 = s2.getCost();
+
+                        // set the nodes costs if they are not set yet
+                        if (cost1 == null) {
+                            cost1 = evaluationFunction.evaluate(s1);
+                            s1.setCost(cost1);
+                        }
+
+                        if (cost2 == null) {
+                            cost2 = evaluationFunction.evaluate(s2);
+                            s2.setCost(cost2);
+                        }
+                        return cost1 - cost2;
+                    }
+                });
+
+    }
+
+    private void prune(List<SearchNode<Action, State>> expansion) {
+        List<SearchNode<Action, State>> prune = new ArrayList<>();
+        for (int i = 0; i < expansion.size(); i++) {
+            SearchNode<Action, State> node = expansion.get(i);
+            if (states.contains(node.getState())) {
+                expansion.remove(i);
+                i--;
+            }
+        }
+    }
+    
+    public int getSteps() {
+        return steps;
+    }
+    
+    public int getNumberOfVisitedStates() {
+        return states.size();
+    }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 Geraldo Massahud.
+ * Copyright 2014 t0067421.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package massahud.ai.eightpuzzle;
+
+import massahud.ai.solver.GoalEvaluator;
+import massahud.ai.solver.SearchNode;
 
 /**
  *
  * @author Geraldo Massahud
- *
+ * 
+ * Informações SVN
+ * @version $Revision: $:
+ * @author  Última modificação por $Author: $:
+ * @date    $Date: $:
  */
-public enum Direction {
-    UP, DOWN, LEFT, RIGHT;
+public class Puzzle8GoalEvaluator implements GoalEvaluator<Direction, String>{
+    private String goal;
     
-    public Direction getReverse() {
-        switch(this) {
-            case DOWN: return UP;
-            case UP: return DOWN;
-            case LEFT: return RIGHT;
-            case RIGHT: return LEFT;
-            default: return null;
-        }
+    public Puzzle8GoalEvaluator(String goal) {
+        this.goal = goal;
     }
+
+    @Override
+    public boolean satisfyGoal(SearchNode<Direction, String> searchNode) {
+        return goal.equals(searchNode.getState());
+    }
+    
 }
