@@ -24,6 +24,7 @@
 package massahud.ai.solver;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -71,12 +72,9 @@ public class Solver<Action, State> {
         fringe.add(initialState);
 
         SearchNode<Action, State> node = fringe.poll();
-
         states.add(node.getState());
-        
-        
-        while (node != null) {
 
+        while (node != null) {
             steps++;
             if (goalEvaluator.satisfyGoal(node)) {
                 return generateSolution(node);
@@ -93,6 +91,7 @@ public class Solver<Action, State> {
             }
             node = fringe.poll();
         }
+
         return Collections.emptyList();
     }
 
@@ -152,7 +151,7 @@ public class Solver<Action, State> {
 
     private int findDepth(SearchNode<Action, State> node) {
         int d = -1;
-        while(node != null) {
+        while (node != null) {
             node = node.getFromNode();
             d++;
         }

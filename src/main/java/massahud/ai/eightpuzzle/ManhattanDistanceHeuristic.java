@@ -48,9 +48,9 @@ public class ManhattanDistanceHeuristic implements EvaluationFunction<Direction,
         final String state = searchNode.getState();
         final Puzzle8 puzzle = new Puzzle8(state);
         int distance = 0;
-        for (int i = 0; i < state.length(); i++) {            
+        for (int i = 1; i < state.length(); i++) {
             distance += Math.abs(goal.getCol(i) - puzzle.getCol(i)) + Math.abs(goal.getRow(i) - puzzle.getRow(i));            
-        }
+        }        
         return distance;
     }
     
