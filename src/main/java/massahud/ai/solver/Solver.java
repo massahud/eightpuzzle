@@ -59,43 +59,40 @@ public class Solver<Action, State> {
             final EvaluationFunction<Action, State> evaluationFunction,
             final Expander<Action, State> expander,
             final GoalEvaluator<Action, State> goalEvaluator) {
-
         states.clear();
         steps = 0;
-        
+
         if (initialState == null) {
             throw new IllegalArgumentException("initialState can not be null");
         }
-        
-        
 
         fringe = createPriorityQueue(evaluationFunction);
 
         fringe.add(initialState);
 
         SearchNode<Action, State> node = fringe.poll();
-        
+
         states.add(node.getState());
         
-
+        
         while (node != null) {
+
             steps++;
             if (goalEvaluator.satisfyGoal(node)) {
-                
                 return generateSolution(node);
             } else {
                 List<SearchNode<Action, State>> expansion = expander.expand(node);
-                prune(expansion);
 
-                fringe.addAll(expansion);
+                for (int i = 0; i < expansion.size(); i++) {
+                    SearchNode<Action, State> n = expansion.get(i);
+                    if (!states.contains(n.getState())) {
+                        fringe.add(n);
+                        states.add(n.getState());
+                    }
+                }
             }
             node = fringe.poll();
-            if (node != null) {
-                states.add(node.getState());
-            }
-
         }
-        
         return Collections.emptyList();
     }
 
@@ -145,22 +142,20 @@ public class Solver<Action, State> {
 
     }
 
-    private void prune(List<SearchNode<Action, State>> expansion) {
-        List<SearchNode<Action, State>> prune = new ArrayList<>();
-        for (int i = 0; i < expansion.size(); i++) {
-            SearchNode<Action, State> node = expansion.get(i);
-            if (states.contains(node.getState())) {
-                expansion.remove(i);
-                i--;
-            }
-        }
-    }
-    
     public int getSteps() {
         return steps;
     }
-    
+
     public int getNumberOfVisitedStates() {
         return states.size();
+    }
+
+    private int findDepth(SearchNode<Action, State> node) {
+        int d = -1;
+        while(node != null) {
+            node = node.getFromNode();
+            d++;
+        }
+        return d;
     }
 }
